@@ -51,7 +51,7 @@
     </button>
 
     <button disabled class="hidden group-[[data-wallet-connector-signature-status-value='signing']]:block">Signing...</button>
-    <span class="hidden group-[[data-wallet-connector-signature-status-value='signed']]:block">You are signed in!</span>
+    <span class="hidden group-[[data-wallet-connector-account-status-value='connected'][data-wallet-connector-signature-status-value='signed']]:block">You are signed in!</span>
     <button
       data-action="wallet-connector#walletDisconnect"
       class="
