@@ -1,0 +1,65 @@
+<%= tag.div class: "group flex items-center justify-center h-screen w-screen",
+            data: {
+              controller: "wallet-connector",
+              wallet_connector_account_address_value: Current.user&.wallet_address,
+              wallet_connector_signature_status_value: Current.user ? "signed" : "unsigned",
+              wallet_connector_authenticity_token_value: form_authenticity_token
+            } do %>
+
+  <div class="flex flex-col gap-5 border-solid border-gray-500 border rounded p-5 w-96">
+    <div class="text-center break-words text-sm hidden group-[[data-wallet-connector-account-status-value='disconnected']]:block">Wallet not connected</div>
+    <div class="text-center break-words text-sm hidden group-[[data-wallet-connector-account-status-value='connected']]:block">
+      Wallet connected:
+      <span data-wallet-connector-target="address"><%= Current.user&.wallet_address %></span>
+  </div>
+
+  <!-- Buttons -->
+  <div class="mt-7 flex flex-col gap-3 w-full">
+    <button
+      data-action="wallet-connector#metaMaskConnect"
+      class="
+        hidden group-[[data-wallet-connector-account-status-value='disconnected']]:block
+        py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none
+      "
+    >
+      MetaMask
+    </button>
+
+    <button
+      data-action="wallet-connector#walletConnect"
+      class="
+        hidden group-[[data-wallet-connector-account-status-value='disconnected']]:block
+        py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800
+      "
+    >
+      WalletConnect
+    </button>
+  </div>
+  <!-- End Buttons -->
+
+  <div class="flex flex-col items-center gap-2">
+    <div class="text-center break-words text-sm hidden group-[[data-wallet-connector-account-status-value='connecting']]:block">Connecting wallet...</div>
+
+    <button
+      data-action="wallet-connector#sign"
+      class="
+        hidden group-[[data-wallet-connector-account-status-value='connected'][data-wallet-connector-signature-status-value='unsigned']]:block
+        py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none
+      "
+    >
+      Sign In
+    </button>
+
+    <button disabled class="hidden group-[[data-wallet-connector-signature-status-value='signing']]:block">Signing...</button>
+    <span class="hidden group-[[data-wallet-connector-signature-status-value='signed']]:block">You are signed in!</span>
+    <button
+      data-action="wallet-connector#walletDisconnect"
+      class="
+        hidden group-[[data-wallet-connector-account-status-value='connected'][data-wallet-connector-signature-status-value='signed']]:block
+        py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 disabled:pointer-events-none
+      "
+    >
+      Sign Out
+    </button>
+  </div>
+<% end %>
